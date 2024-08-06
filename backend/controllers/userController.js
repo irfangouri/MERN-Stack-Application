@@ -1,47 +1,27 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-const { emailSchema, passwordSchema } = require('../validations/types.js');
 const User = require('../models/user.js');
 
-const registerUser = async (req, res, next) => {
+const userService = require('../services/userService');
+
+const registerUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const userData = req.body;
 
-    if ( !username || !password ) {
-      return res.status(403).send('Please fill all the fields');
+    const user = await userService.registerUser(userData);
+    if (user?.error) {
+      return res.status(403).send(user.error);
     }
 
-    const usernameValidation = emailSchema.safeParse(username);
-    const passwordValidation = passwordSchema.safeParse(password);
-
-    if (
-      !usernameValidation.success
-      || !passwordValidation.success
-    ) {
-      return res.status(403).send('Validation error, please check your fields');
-    }
-
-    const user = await User.findOne({ username });
-
-    if (user) {
-      return res.status(403).send('User already registered');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
-
-    const newUser = new User({
-      username,
-      password: hashedPassword,
+    res.status(201).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
     });
-
-    await newUser.save();
-    return res.status(201).json({
-      id: newUser._id,
-      username: newUser.username,
-    });
-  } catch(err) {
-    next(err);
+  } catch(error) {
+    res.status(500).send(
+      `An Error occurred while registering user, Error: ${error}`,
+    );
   }
 }
 
@@ -75,7 +55,7 @@ const loginUser = async (req, res, next) => {
       return res.status(403).send('Password is wrong, please re-check your password');
     }
 
-    const accessToken = jwt.sign({ user }, process.env.JWT_SECRET_MESSAGE);
+    const accessToken = jwt.sign({ user }, process.env.JWT_SECRET);
 
     return res.status(201).json({
       'access-token': accessToken,
