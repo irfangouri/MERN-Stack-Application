@@ -18,6 +18,16 @@ const addTodo = (req, res, next) => {
 
 const getTodo = async (req, res, next) => {
   try {
+    const { todoId } = req.params;
+    const todos = await Todo.findById(todoId);
+    res.status(200).json(todos);
+  } catch (err) {
+    next(err);
+  }
+}
+
+const getAllTodo = async (req, res, next) => {
+  try {
     const todos = await Todo.find();
     res.status(200).json(todos);
   } catch (err) {
@@ -60,6 +70,7 @@ const deleteTodo = async (req, res, next) => {
 module.exports = {
   addTodo,
   getTodo,
+  getAllTodo,
   updateTodo,
   deleteTodo,
 };

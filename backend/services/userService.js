@@ -1,13 +1,24 @@
-const { validateUser } = require("../validations/userValidation");
 const User = require('../models/user');
-const { getHashedPassword } = require("../utils/helpers");
+const { validateUser } = require('../validations/userValidation');
+const { getHashedPassword, comparePassword, getAccessToken, verifyAccessToken } = require('../utils/helpers');
 
 const registerUser = async ( userData ) => {
   const { name, email, password, confirmPassword } = userData;
 
+  if (
+    !name
+    || !email
+    || !password
+    || !confirmPassword
+  ) {
+    return {
+      error: 'Please fill all the fields',
+    };
+  }
+
   if (password !== confirmPassword) {
     return {
-      error: "Confirm Password doesn't match with Password",
+      error: `Confirm Password doesn't match with Password`,
     };
   }
 
@@ -36,8 +47,60 @@ const registerUser = async ( userData ) => {
   return newUser;
 }
 
-const loginUser = ( userData ) => {
+const loginUser = async ( userData ) => {
   const { email, password } = userData;
+
+  if (
+    !email
+    || !password
+  ) {
+    return {
+      error: 'Please fill all the fields',
+    };
+  }
+
+  const userDataValidation = validateUser(userData);
+  if (userDataValidation?.error) {
+    return {
+      error: `User data is not validated, Please fill valid data. Error: ${userDataValidation.error}`,
+    };
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return {
+      error: 'User not found',
+    };
+  }
+
+  const isPasswordValid = await comparePassword(password, user.password);
+  if (!isPasswordValid) {
+    return {
+      error: 'Wrong Password',
+    };
+  }
+
+  const accessToken = getAccessToken(user);
+  verifyAccessToken(accessToken);
+  return {
+    id: user._id.toString(),
+    accessToken,
+  };
+}
+
+const getUser = async ( userId ) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    return {
+      error: 'User not found',
+    };
+  }
+
+  return {
+    id: userId,
+    name: user.name,
+    email: user.email,
+  };
 }
 
 module.exports = {

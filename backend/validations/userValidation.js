@@ -8,7 +8,7 @@ const validateUser = (userData) => {
   const { name, email, password } = userData;
 
   const nameValidation = nameSchema.safeParse(name);
-  if (!nameValidation.success) {
+  if (name && !nameValidation.success) {
     return {
       error: 'User name is not valid, it must have a length of 3 characters',
     };
