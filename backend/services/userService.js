@@ -1,4 +1,5 @@
 const User = require('../models/user');
+
 const { validateUser } = require('../validations/userValidation');
 const { getHashedPassword, comparePassword, getAccessToken, verifyAccessToken } = require('../utils/helpers');
 
@@ -81,7 +82,6 @@ const loginUser = async ( userData ) => {
   }
 
   const accessToken = getAccessToken(user);
-  verifyAccessToken(accessToken);
   return {
     id: user._id.toString(),
     accessToken,
@@ -106,4 +106,5 @@ const getUser = async ( userId ) => {
 module.exports = {
   registerUser,
   loginUser,
+  getUser,
 };

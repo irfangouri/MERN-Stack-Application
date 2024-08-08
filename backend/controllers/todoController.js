@@ -1,41 +1,49 @@
 const Todo = require('../models/todo');
+const todoService = require('../services/todoService');
 
-const addTodo = (req, res, next) => {
+const addTodo = async (req, res) => {
   try {
-    const { description, title } = req.body;
+    const todoData = req.body;
 
-    const newTodo = new Todo({
-      description,
-      title,
-    });
-    newTodo.save();
+    const todo = await todoService.addTodo(todoData);
+    if (todo?.error) {
+      return res.status(400).json({
+        error: todo.error,
+      });
+    }
 
-    res.status(201).json(newTodo);
+    res.status(201).json(todo);
   } catch (err) {
-    next(err);
+    res.status(500).send(
+      `An error occurred while creating todo, Error: ${err}`
+    );
   }
 }
 
-const getTodo = async (req, res, next) => {
+const getTodo = async (req, res) => {
   try {
     const { todoId } = req.params;
     const todos = await Todo.findById(todoId);
     res.status(200).json(todos);
   } catch (err) {
-    next(err);
+    res.status(500).send(
+      `An error occurred while creating todo, Error: ${err}`
+    );
   }
 }
 
-const getAllTodo = async (req, res, next) => {
+const getAllTodo = async (req, res) => {
   try {
-    const todos = await Todo.find();
+    const todos = await todoService.getAllTodos();
     res.status(200).json(todos);
   } catch (err) {
-    next(err);
+    res.status(500).send(
+      `An error occurred while creating todo, Error: ${err}`
+    );
   }
 }
 
-const updateTodo = async (req, res, next) => {
+const updateTodo = async (req, res) => {
   try {
     const { todoId } = req.params;
     const { description, isCompleted, title} = req.body;
@@ -48,11 +56,13 @@ const updateTodo = async (req, res, next) => {
 
     res.status(200).json(todo);
   } catch (err) {
-    next(err);
+    res.status(500).send(
+      `An error occurred while creating todo, Error: ${err}`
+    );
   }
 }
 
-const deleteTodo = async (req, res, next) => {
+const deleteTodo = async (req, res) => {
   try {
     const { todoId } = req.params;
     const todo = await Todo.findOneAndDelete({ _id: todoId });
@@ -63,7 +73,9 @@ const deleteTodo = async (req, res, next) => {
 
     res.send(204);
   } catch (err) {
-    next(err);
+    res.status(500).send(
+      `An error occurred while creating todo, Error: ${err}`
+    );
   }
 }
 

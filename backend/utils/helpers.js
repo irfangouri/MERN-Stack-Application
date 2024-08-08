@@ -24,8 +24,14 @@ const getAccessToken = (userData) => {
 }
 
 const verifyAccessToken = async (accessToken) => {
-  const data = jwt.verify(accessToken, JWT_SECRET);
-  return data;
+  try {
+    const data = jwt.verify(accessToken, JWT_SECRET);
+    return data;
+  } catch (error) {
+    return {
+      error: error,
+    };
+  }
 }
 
 module.exports = {

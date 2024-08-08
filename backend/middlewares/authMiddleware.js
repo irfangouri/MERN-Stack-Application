@@ -1,10 +1,32 @@
+const { verifyAccessToken } = require('../utils/helpers');
 
 
-const auth = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
-    const { accessToken } = req.body;
-    
+    const accessToken = req.headers.authorization;
+    const { userId } = req.params;
+
+    const userDetails = await verifyAccessToken(accessToken);
+    if (userDetails?.error) {
+      return res.status(400).json({
+        error: userDetails.error,
+      });
+    }
+
+    if (userDetails.userData._id != userId) {
+      return res.status(400).json({
+        error: 'Unauthorized access',
+      });
+    }
+
+    next();
   } catch (err) {
-    next(err);
+    res.status(500).json({
+      error: err,
+    });
   }
 }
+
+module.exports = {
+  authMiddleware,
+};
