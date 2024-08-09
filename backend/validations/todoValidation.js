@@ -6,8 +6,8 @@ const dateSchema = zod.string().datetime();
 const statusSchema = zod.enum(['in-progress', 'pending', 'completed']);
 const prioritySchema = zod.enum(['low', 'medium', 'high']);
 
-const validateTodo = (todoData) => {
-  const { title, description, status, createdBy, dueDate, priority } = todoData;
+const validateTodo = (todoData, userId) => {
+  const { title, description, status, dueDate, priority } = todoData;
 
   const titleValidation = stringSchema.safeParse(title);
   if (!titleValidation.success) {
@@ -30,8 +30,8 @@ const validateTodo = (todoData) => {
     };
   }
 
-  const createdByValidation = idSchema.safeParse(createdBy);
-  if (!createdByValidation.success) {
+  const userIdValidation = idSchema.safeParse(userId);
+  if (!userIdValidation.success) {
     return {
       error: 'User id is not valid, it should be of 24 characters',
     };

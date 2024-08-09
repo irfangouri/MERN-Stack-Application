@@ -1,7 +1,7 @@
 const express = require('express');
 const todoController = require('../controllers/todoController');
 
-const todo = express();
+const todo = express.Router({ mergeParams: true });
 
 todo.post('/', todoController.addTodo);
 todo.get('/:todoId', todoController.getTodo);

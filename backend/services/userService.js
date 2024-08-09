@@ -103,8 +103,35 @@ const getUser = async ( userId ) => {
   };
 }
 
+const resetPassword = async (userId, userData) => {
+  const { password, confirmPassword } = userData;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return {
+      error: 'User not found',
+    };
+  }
+
+  if (password !== confirmPassword) {
+    return {
+      error: 'Confirm Password and Password does not match',
+    };
+  }
+
+  const hashedPassword = await getHashedPassword(password);
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { password: hashedPassword },
+    { new: true },
+  );
+  return updatedUser;
+}
+
 module.exports = {
   registerUser,
   loginUser,
   getUser,
+  resetPassword,
 };
