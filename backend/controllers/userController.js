@@ -1,3 +1,4 @@
+const sendMail = require('../services/mailService');
 const userService = require('../services/userService');
 
 const registerUser = async (req, res) => {
@@ -8,6 +9,8 @@ const registerUser = async (req, res) => {
     if (user?.error) {
       return res.status(403).send(user.error);
     }
+
+    await sendMail();
 
     res.status(201).json({
       id: user._id,
@@ -51,7 +54,7 @@ const getUser = async (req, res) => {
       return res.status(404).send(user.error);
     }
 
-    res.status(201).json({ user });
+    res.status(200).json({ user });
   } catch(error) {
     res.status(500).send(
       `Error: ${error}`,
@@ -73,7 +76,13 @@ const resetPassword = async (req, res) => {
       return res.status(statusCode).send(user.error);
     }
 
-    res.status(201).json({ user });
+    res.status(201).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch(error) {
     res.status(500).send(
       `Error: ${error}`,

@@ -1,11 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
-const JWT_SECRET = process.env.JWT_SECRET;
+const {
+  SALT_ROUNDS,
+  JWT_SECRET,
+} = require('../config/config');
 
 const getHashedPassword = async (password) => {
-  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+  const hashedPassword = await bcrypt.hash(password, parseInt(SALT_ROUNDS));
   return hashedPassword;
 }
 

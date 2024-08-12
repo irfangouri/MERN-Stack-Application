@@ -50,8 +50,6 @@ const validateTodo = (todoData, userId) => {
       error: 'Priority must be either low or medium or high',
     };
   }
-
-  return {};
 }
 
 module.exports = {
