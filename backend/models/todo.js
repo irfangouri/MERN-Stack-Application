@@ -18,6 +18,7 @@ const todoSchema = new mongoose.Schema(
     },
     createdBy: {
       type: String,
+      index: true,
       required: true,
     },
     dueDate: {
@@ -34,6 +35,6 @@ const todoSchema = new mongoose.Schema(
   },
 );
 
-const Todo = mongoose.model('Todos', todoSchema);
+const Todo = mongoose.model('Todo', todoSchema);
 
 module.exports = Todo;

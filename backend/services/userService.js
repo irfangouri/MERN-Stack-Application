@@ -26,14 +26,14 @@ const registerUser = async ( userData ) => {
   const userDataValidation = validateUser(userData);
   if (userDataValidation?.error) {
     return {
-      error: `User data is not validated, Please fill valid data. Error: ${userDataValidation.error}`,
+      error: `Error: ${userDataValidation.error}`,
     };
   }
 
   const user = await User.findOne({ email });
   if (user) {
     return {
-      error: 'User already exist, Please use different email address',
+      error: 'User already exist, Please use different email address or login',
     };
   }
 
@@ -45,7 +45,11 @@ const registerUser = async ( userData ) => {
   });
   await newUser.save();
 
-  return newUser;
+  return {
+    id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+  };
 }
 
 const loginUser = async ( userData ) => {
@@ -63,7 +67,7 @@ const loginUser = async ( userData ) => {
   const userDataValidation = validateUser(userData);
   if (userDataValidation?.error) {
     return {
-      error: `User data is not validated, Please fill valid data. Error: ${userDataValidation.error}`,
+      error: `Error: ${userDataValidation.error}`,
     };
   }
 
@@ -83,7 +87,7 @@ const loginUser = async ( userData ) => {
 
   const accessToken = getAccessToken(user);
   return {
-    id: user._id.toString(),
+    id: user._id,
     accessToken,
   };
 }
@@ -106,6 +110,12 @@ const getUser = async ( userId ) => {
 const resetPassword = async (userId, userData) => {
   const { password, confirmPassword } = userData;
 
+  if (password.length < 8) {
+    return {
+      error: 'Password is not valid, it must have a length of 8 characters or more',
+    };
+  }
+
   const user = await User.findById(userId);
   if (!user) {
     return {
@@ -126,7 +136,11 @@ const resetPassword = async (userId, userData) => {
     { password: hashedPassword },
     { new: true },
   );
-  return updatedUser;
+  return {
+    id: updatedUser._id,
+    name: updatedUser.name,
+    email: updatedUser.email,
+  };
 }
 
 module.exports = {

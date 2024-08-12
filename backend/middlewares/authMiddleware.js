@@ -8,13 +8,13 @@ const authMiddleware = async (req, res, next) => {
 
     const userDetails = await verifyAccessToken(accessToken);
     if (userDetails?.error) {
-      return res.status(400).json({
+      return res.status(403).json({
         error: userDetails.error,
       });
     }
 
     if (userDetails.userData._id != userId) {
-      return res.status(400).json({
+      return res.status(401).json({
         error: 'Unauthorized access',
       });
     }

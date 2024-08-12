@@ -4,9 +4,9 @@ const todoController = require('../controllers/todoController');
 const todo = express.Router({ mergeParams: true });
 
 todo.post('/', todoController.addTodo);
-todo.get('/:todoId', todoController.getTodo);
-todo.get('/', todoController.getAllTodo);
-todo.patch('/:todoId', todoController.updateTodo);
-todo.delete('/:todoId', todoController.deleteTodo);
+todo.get('/:todoId', todoController.getTodoById);
+todo.get('/', todoController.getAllTodos);
+todo.patch('/:todoId', todoController.updateTodoById);
+todo.delete('/:todoId', todoController.deleteTodoById);
 
 module.exports = todo;

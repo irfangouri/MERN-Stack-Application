@@ -20,10 +20,10 @@ const addTodo = async (req, res) => {
   }
 }
 
-const getTodo = async (req, res) => {
+const getTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
-    const todo = await todoService.getTodo(todoId);
+    const todo = await todoService.getTodoById(todoId);
     if (todo?.error) {
       return res.status(404).json({
         error: `Todo with id ${todoId} not found`
@@ -38,7 +38,7 @@ const getTodo = async (req, res) => {
   }
 }
 
-const getAllTodo = async (req, res) => {
+const getAllTodos = async (req, res) => {
   try {
     const { userId } = req.params;
     const todos = await todoService.getAllTodos(userId);
@@ -50,12 +50,12 @@ const getAllTodo = async (req, res) => {
   }
 }
 
-const updateTodo = async (req, res) => {
+const updateTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
     const todoData = req.body;
 
-    const updatedTodo = await todoService.updateTodo(todoId, todoData);
+    const updatedTodo = await todoService.updateTodoById(todoId, todoData);
     if (updatedTodo?.error) {
       return res.status(404).json({
         error: `Todo with id ${todoId} not found`
@@ -70,17 +70,17 @@ const updateTodo = async (req, res) => {
   }
 }
 
-const deleteTodo = async (req, res) => {
+const deleteTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
-    const todo = await todoService.deleteTodo(todoId);
+    const todo = await todoService.deleteTodoById(todoId);
     if (todo?.error) {
       return res.status(404).json({
         error: `Todo with id ${todoId} not found`
       });
     }
 
-    res.send(204);
+    res.status(204);
   } catch (err) {
     res.status(500).send(
       `Error: ${err}`,
@@ -90,8 +90,8 @@ const deleteTodo = async (req, res) => {
 
 module.exports = {
   addTodo,
-  getTodo,
-  getAllTodo,
-  updateTodo,
-  deleteTodo,
+  getTodoById,
+  getAllTodos,
+  updateTodoById,
+  deleteTodoById,
 };

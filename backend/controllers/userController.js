@@ -12,11 +12,7 @@ const registerUser = async (req, res) => {
 
     await sendMail();
 
-    res.status(201).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    });
+    res.status(201).json({ user });
   } catch(error) {
     res.status(500).send(
       `Error: ${error}`,
@@ -76,13 +72,7 @@ const resetPassword = async (req, res) => {
       return res.status(statusCode).send(user.error);
     }
 
-    res.status(201).json({
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-    });
+    res.status(201).json({ user });
   } catch(error) {
     res.status(500).send(
       `Error: ${error}`,

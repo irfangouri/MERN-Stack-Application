@@ -22,7 +22,7 @@ const addTodo = async (todoData, userId) => {
   return todo;
 }
 
-const getTodo = async (todoId) => {
+const getTodoById = async (todoId) => {
   const todo = await Todo.findById(todoId);
   if (!todo) {
     return {
@@ -38,7 +38,7 @@ const getAllTodos = async (userId) => {
   return todos;
 }
 
-const updateTodo = async (todoId, todoData) => {
+const updateTodoById = async (todoId, todoData) => {
   let { status, priority, dueDate } = todoData;
 
   const todo = await Todo.findById(todoId);
@@ -69,7 +69,7 @@ const updateTodo = async (todoId, todoData) => {
   return updatedTodo;
 }
 
-const deleteTodo = async (todoId) => {
+const deleteTodoById = async (todoId) => {
   const todo = await Todo.findByIdAndDelete(todoId);
   if (!todo) {
     return {
@@ -82,8 +82,8 @@ const deleteTodo = async (todoId) => {
 
 module.exports = {
   addTodo,
-  getTodo,
+  getTodoById,
   getAllTodos,
-  updateTodo,
-  deleteTodo,
+  updateTodoById,
+  deleteTodoById,
 };
