@@ -13,8 +13,8 @@ const {
 const app = express();
 databaseConnection();
 
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use('/api/v1', indexRoutes);
 
