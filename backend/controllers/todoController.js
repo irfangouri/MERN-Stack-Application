@@ -24,12 +24,6 @@ const getTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
     const todo = await todoService.getTodoById(todoId);
-    if (todo?.error) {
-      return res.status(404).json({
-        error: `Todo with id ${todoId} not found`
-      });
-    }
-
     res.status(200).json(todo);
   } catch (err) {
     res.status(500).send(
@@ -54,14 +48,7 @@ const updateTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
     const todoData = req.body;
-
     const updatedTodo = await todoService.updateTodoById(todoId, todoData);
-    if (updatedTodo?.error) {
-      return res.status(404).json({
-        error: `Todo with id ${todoId} not found`
-      });
-    }
-
     res.status(200).json(updatedTodo);
   } catch (err) {
     res.status(500).send(
@@ -73,13 +60,7 @@ const updateTodoById = async (req, res) => {
 const deleteTodoById = async (req, res) => {
   try {
     const { todoId } = req.params;
-    const todo = await todoService.deleteTodoById(todoId);
-    if (todo?.error) {
-      return res.status(404).json({
-        error: `Todo with id ${todoId} not found`
-      });
-    }
-
+    await todoService.deleteTodoById(todoId);
     res.status(204);
   } catch (err) {
     res.status(500).send(

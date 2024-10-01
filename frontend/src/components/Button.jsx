@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Button({ title }) {
+const Button = ({ title }) => {
   return (
     <div className='d-grid gap-2 col-8 mx-auto mt-4'>
       <button
@@ -10,3 +10,5 @@ export default function Button({ title }) {
     </div>
   );
 }
+
+export default Button;

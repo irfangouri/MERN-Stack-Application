@@ -1,12 +1,12 @@
 import React from 'react';
 
-export default function Input({ label, setField, type }) {
+const Input = ({ label, setField, type }) => {
   return (
     <div className='input-group flex-nowrap my-2'>
-      <span class="input-group-text" id="addon-wrapping">{label}</span>
+      <span className="input-group-text w-25" id="addon-wrapping">{label}</span>
       <input
         type={type}
-        class="form-control"
+        className="form-control"
         placeholder={`Enter Your ${label}`}
         aria-describedby="addon-wrapping"
         onChange={(e) => setField(e.target.value)}
@@ -14,3 +14,5 @@ export default function Input({ label, setField, type }) {
     </div>
   );
 }
+
+export default Input;

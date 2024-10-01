@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import Todo from '../../components/Todo';
+import AddTodo from '../../components/AddTodo';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -15,12 +17,13 @@ const Landing = () => {
     } else {
       navigate('/login');
     }
-  })
+  }, []);
 
   return (
     <div>
-      <button onClick={() => logout()}>Logout</button>
-      Hello world!!!
+      {/* <AddTodo /> */}
+      <Todo />
+      <button onClick={logout}>Logout</button>
     </div>
   );
 }

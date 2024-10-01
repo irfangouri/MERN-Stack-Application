@@ -1,61 +1,65 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Landing from '../pages/landing/Landing';
 import { AuthProvider } from '../context/AuthContext';
 
-const Signup = lazy(() => import('../pages/auth/Signup'));
-const Login = lazy(() => import('../pages/auth/Login'));
+import Signup from '../pages/auth/Signup';
+import Login from '../pages/auth/Login';
+import Landing from '../pages/landing/Landing';
+import Navbar from '../layouts/navbar/Navbar';
 
 const Routing = () => {
-  const [accessToken, seAccessToken] = useState('');
-
-  useEffect(() => {
-    const token = localStorage.getItem('access-token');
-    seAccessToken(token);
-  }, []);
-
   return (
     <Routes>
-      {/* Authentication */}
-      <Route
-        path='/*'
-        element={ accessToken === ''
-          ? <AuthProvider>
+        {/* Authentication */}
+        <Route
+          path='/*'
+          element={
+            <AuthProvider>
               <Login />
             </AuthProvider>
-          : <AuthProvider>
-              <Landing />
+          }
+        />
+
+        <Route
+          path='/signup'
+          element={
+            <AuthProvider>
+              <Signup />
             </AuthProvider>
-        }
-      />
+          }
+        />
 
-      <Route
-        path='/signup'
-        element={
-          <AuthProvider>
-            <Signup />
-          </AuthProvider>
-        }
-      />
+        <Route
+          path='/login'
+          element={
+            <AuthProvider>
+              <Login />
+            </AuthProvider>
+          }
+        />
 
-      <Route
-        path='/login'
-        element={
-          <AuthProvider>
-            <Login />
-          </AuthProvider>
-        }
-      />
+        {/* Landing */}
+        <Route
+          path='/user/*'
+          element={
+            <AuthProvider>
+              <Navbar>
+                <Landing />
+              </Navbar>
+            </AuthProvider>
+          }
+        />
 
-      {/* Landing */}
-      <Route
-        path='/user/:userId'
-        element={
-          <AuthProvider>
-            <Landing />
-          </AuthProvider>
-        }
-      />
+        <Route
+          path='/user/:userId'
+          element={
+            <AuthProvider>
+              <Navbar>
+                <Landing />
+              </Navbar>
+            </AuthProvider>
+          }
+        />
     </Routes>
   );
 }

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-
+import '../../styles/custom.scss';
 import {
   Button,
   Header,
   Input
 } from '../../components/index';
 
-import '../../styles/custom.scss';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -33,13 +32,13 @@ const Signup = () => {
     } else {
       navigate('/signup');
     }
-  }, [accessToken, navigate]);
+  }, []);
 
   return (
-    <div className='auth-form'>
+    <div className='border auth-form'>
       <Header title={'Sign Up Page'} />
 
-      <form onSubmit={handleSubmit} className='mb-4'>
+      <form onSubmit={handleSubmit} className='form mb-4'>
         <Input
           label={'Name'}
           setField={setName}
@@ -70,7 +69,15 @@ const Signup = () => {
       </form>
 
       <p>OR</p>
-      <p>Already have an account? <button onClick={() => navigate('/')} className='redirect-button'>Login</button></p>
+      <p>
+        Already have an account?
+        <button
+          className='redirect-button'
+          onClick={() => navigate('/login')}
+        >
+          Login
+        </button>
+      </p>
     </div>
   );
 }
