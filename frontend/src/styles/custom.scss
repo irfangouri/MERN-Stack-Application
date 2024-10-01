@@ -1,0 +1,51 @@
+// Auth form used to build forms for signup and login page
+.auth-form {
+  text-align: center;
+
+  margin: auto;
+  margin-top: 10vw;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 30px;
+
+  width: 600px;
+  border-radius: 8px;
+}
+
+// Redirect button used to move from login page to signup page and vice-versa
+.redirect-button {
+  border: none;
+  background-color: white;
+  color: rgb(44, 44, 248);
+  text-decoration-line: underline;
+}
+
+.redirect-button:hover {
+  color: blue;
+  text-decoration-line: none;
+}
+
+// Todo Designing
+.todo {
+  margin: 10px auto;
+  padding:15px 20px;
+
+  width: 700px;
+  border-radius: 8px;
+
+  position: relative;
+  .dropdown-menu {
+    z-index: 1;
+  }
+}
+
+.todo > div > h1 {
+  font-size: 30px;
+}
+
+.todo > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

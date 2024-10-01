@@ -5,7 +5,22 @@ const emailSchema = zod.string().email();
 const passwordSchema = zod.string().min(8);
 
 const validateUser = (userData) => {
-  const { name, email, password } = userData;
+  const { name, email, password, confirmPassword } = userData;
+
+  if (
+    !email
+    || !password
+  ) {
+    return {
+      error: 'Please fill all the fields',
+    };
+  }
+
+  if (password !== confirmPassword) {
+    return {
+      error: `Confirm Password doesn't match with Password`,
+    };
+  }
 
   const nameValidation = nameSchema.safeParse(name);
   if (name && !nameValidation.success) {

@@ -24,12 +24,6 @@ const addTodo = async (todoData, userId) => {
 
 const getTodoById = async (todoId) => {
   const todo = await Todo.findById(todoId);
-  if (!todo) {
-    return {
-      error: 'Todo not found',
-    };
-  }
-
   return todo;
 }
 
@@ -42,20 +36,13 @@ const updateTodoById = async (todoId, todoData) => {
   let { status, priority, dueDate } = todoData;
 
   const todo = await Todo.findById(todoId);
-  if (!todo) {
-    return {
-      error: 'Todo not found',
-    };
-  }
 
   if (!status) {
     status = todo.status;
   }
-
   if (!priority) {
     priority = todo.priority;
   }
-
   if (!dueDate) {
     dueDate: todo.dueDate;
   }
@@ -71,12 +58,6 @@ const updateTodoById = async (todoId, todoData) => {
 
 const deleteTodoById = async (todoId) => {
   const todo = await Todo.findByIdAndDelete(todoId);
-  if (!todo) {
-    return {
-      error: 'Todo not found',
-    };
-  }
-
   return todo;
 }
 

@@ -1,12 +1,13 @@
 const express = require('express');
 const todoController = require('../controllers/todoController');
+const todoMiddleware = require('../middlewares/todoMiddleware');
 
 const todo = express.Router({ mergeParams: true });
 
 todo.post('/', todoController.addTodo);
-todo.get('/:todoId', todoController.getTodoById);
+todo.get('/:todoId', todoMiddleware, todoController.getTodoById);
 todo.get('/', todoController.getAllTodos);
-todo.patch('/:todoId', todoController.updateTodoById);
-todo.delete('/:todoId', todoController.deleteTodoById);
+todo.patch('/:todoId', todoMiddleware, todoController.updateTodoById);
+todo.delete('/:todoId', todoMiddleware, todoController.deleteTodoById);
 
 module.exports = todo;
